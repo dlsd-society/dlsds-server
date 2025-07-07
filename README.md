@@ -1,5 +1,5 @@
 Admin login:
 ------------
-"name": "Jyotirmoy Das",
+"name": "Jd Admin",
 "email": "jyotirmoydas12@gmail.com",
 "password": "Abc@12345" 
