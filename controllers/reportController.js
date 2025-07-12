@@ -36,3 +36,16 @@ exports.getReportsByCategory = async (req, res) => {
     res.status(500).json({ error: err.message });
   }
 };
+
+// Get all reports
+exports.getAllReports = async (req, res) => {
+  try {
+    const reports = await prisma.report.findMany({
+      orderBy: { createdAt: "desc" },
+    });
+    res.json(reports);
+  } catch (err) {
+    res.status(500).json({ error: err.message });
+  }
+};
+
