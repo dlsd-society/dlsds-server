@@ -3,9 +3,9 @@ const prisma = new PrismaClient();
 
 exports.submitPartnership = async (req, res) => {
   try {
-    const { organisation, contactPerson, email, contactNumber, remarks } = req.body;
+    const { organisation, contactPerson, email, contactNumber, remarks, state, city } = req.body;
 
-    if (!organisation || !contactPerson || !email || !contactNumber) {
+    if (!organisation || !contactPerson || !email || !contactNumber || !state || !city) {
       return res.status(400).json({ error: "Required fields missing" });
     }
 
@@ -16,6 +16,8 @@ exports.submitPartnership = async (req, res) => {
         email,
         contactNumber,
         remarks,
+        state,
+        city
       },
     });
 

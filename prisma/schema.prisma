@@ -53,6 +53,8 @@ model Partnership {
   contactPerson   String
   email           String
   contactNumber   String
+  state           String 
+  city            String
   remarks         String?
   createdAt       DateTime @default(now())
 }
