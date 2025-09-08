@@ -24,7 +24,6 @@ exports.signup = async (req, res) => {
       data: { name, email, password: hashedPassword },
     });
 
-    // res.status(201).json({ message: "User registered successfully", user });
     // Remove password field before sending response
     const { password: _, ...safeUser } = user;
 
@@ -78,7 +77,6 @@ exports.getProfile = async (req, res) => {
   }
 };
 
-// (Optional: Keep your old functions if you still need them)
 exports.getAllUsers = async (req, res) => {
   const users = await prisma.user.findMany();
   res.json(users);
