@@ -70,8 +70,41 @@ exports.login = async (req, res) => {
 // Protected Profile
 exports.getProfile = async (req, res) => {
   try {
-    const user = await prisma.user.findUnique({ where: { id: req.user.id } });
-    res.json(user);
+    const user = await prisma.user.findUnique({
+      where: { id: req.user.id },
+    });
+
+    if (!user) {
+      return res.status(404).json({ message: "User not found" });
+    }
+
+    // exclude password before sending
+    const { password: _, ...safeUser } = user;
+
+    res.json({
+      message: "Profile fetched successfully",
+      user: safeUser,
+    });
+  } catch (err) {
+    res.status(500).json({ error: err.message });
+  }
+};
+
+exports.updateProfile = async (req, res) => {
+  try {
+    const { name, bio, profilePic } = req.body;
+
+    const updatedUser = await prisma.user.update({
+      where: { id: req.user.id },
+      data: { name, bio, profilePic },
+    });
+
+    const { password: _, ...safeUser } = updatedUser;
+
+    res.json({
+      message: "Profile updated successfully",
+      user: safeUser,
+    });
   } catch (err) {
     res.status(500).json({ error: err.message });
   }
