@@ -58,3 +58,18 @@ model Partnership {
   remarks         String?
   createdAt       DateTime @default(now())
 }
+
+model FirstHack {
+  id             String   @id @unique
+  teamName       String
+  teamSize       String
+  soloPreference String?   
+  fullName       String
+  email          String
+  phone          String
+  cityState      String
+  experience     String
+  agreement      Boolean
+  hackathonVersion String
+  createdAt      DateTime @default(now())
+}
