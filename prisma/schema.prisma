@@ -73,3 +73,23 @@ model FirstHack {
   hackathonVersion String
   createdAt      DateTime @default(now())
 }
+
+model Internship {
+  id                String   @id @unique
+  joinPreference    String
+  fullName          String
+  email             String
+  phone             String
+  cityState         String
+  institution       String
+  projectPreference String
+  groupDetails      String?
+  domains           String[]
+  tools             String?
+  previousProjects  String?
+  certificateOption String
+  agreement         Boolean
+  internshipVersion String
+  createdAt         DateTime @default(now())
+}
+
