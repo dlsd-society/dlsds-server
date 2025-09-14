@@ -14,6 +14,12 @@ const app = express();
 app.use(cors());
 app.use(express.json());
 
+const passport = require("passport");
+require("./config/passport"); // load strategies
+
+app.use(passport.initialize());
+// app.use(passport.session()); // if using sessions
+
 app.get('/', (req, res) => res.send('API is running'));
 
 app.use('/api/admin', adminRoutes);

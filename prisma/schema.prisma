@@ -17,9 +17,11 @@ model Admin {
 
 model User {
   id        Int      @id @default(autoincrement())
-  name      String
+  name      String?
   email     String   @unique
-  password  String
+  password  String?  // may be null for social login
+  provider  String?  // "google" | "github" | "facebook" | "twitter"
+  providerId String? @unique // the unique ID from OAuth provider
   createdAt DateTime @default(now())
 }
 
