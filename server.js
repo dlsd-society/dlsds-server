@@ -8,6 +8,8 @@ const reportRoutes = require("./routes/reportRoutes");
 const volunteerRoutes = require("./routes/volunteerRoutes");
 const partnershipRoutes = require('./routes/partnershipRoutes');
 const firstHackRegistrationRoutes = require('./routes/firstHackRegistrationRoutes');
+const hackathonParticipantRoutes = require('./routes/hackathonParticipantRoutes');
+const hackathonRoutes = require('./routes/hackathonRoutes');
 const internshipRoutes = require("./routes/internshipRoutes");
 
 const app = express();
@@ -28,6 +30,8 @@ app.use("/api/reports", reportRoutes);
 app.use("/api/volunteers", volunteerRoutes);
 app.use("/api/partnerships", partnershipRoutes);
 app.use("/api/firsthack", firstHackRegistrationRoutes);
+app.use("/api/hackathon-participants", hackathonParticipantRoutes);
+app.use("/api/hackathons", hackathonRoutes);
 app.use("/api/internships", internshipRoutes);
 
 const PORT = process.env.PORT || 5000;

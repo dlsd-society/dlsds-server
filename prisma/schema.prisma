@@ -16,65 +16,102 @@ model Admin {
 }
 
 model User {
-  id        Int      @id @default(autoincrement())
-  name      String?
-  email     String   @unique
-  password  String?  // may be null for social login
-  provider  String?  // "google" | "github" | "facebook" | "twitter"
-  providerId String? @unique // the unique ID from OAuth provider
-  createdAt DateTime @default(now())
+  id         Int      @id @default(autoincrement())
+  name       String?
+  email      String   @unique
+  password   String? // may be null for social login
+  provider   String? // "google" | "github" | "facebook" | "twitter"
+  providerId String?  @unique // the unique ID from OAuth provider
+  createdAt  DateTime @default(now())
+
+  // Opposite relation
+  credentials Credential[]
 }
 
 model Report {
-  id         Int      @id @default(autoincrement())
-  category   String   // "Activity", "Audit Report", or "Annual Report"
-  title      String
-  session    String?  // Optional academic session or fiscal year
-  startDate  DateTime
-  endDate    DateTime
-  fileUrl    String
-  createdAt  DateTime @default(now())
-  updatedAt  DateTime @updatedAt
+  id        Int      @id @default(autoincrement())
+  category  String // "Activity", "Audit Report", or "Annual Report"
+  title     String
+  session   String? // Optional academic session or fiscal year
+  startDate DateTime
+  endDate   DateTime
+  fileUrl   String
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
 }
 
 model Volunteer {
-  id             Int      @id @default(autoincrement())
-  fullName       String
-  contactNumber  String
-  email          String
-  qualification  String
-  city           String
-  state          String
-  agreed         Boolean
-  createdAt      DateTime @default(now())
+  id            Int      @id @default(autoincrement())
+  fullName      String
+  contactNumber String
+  email         String
+  qualification String
+  city          String
+  state         String
+  agreed        Boolean
+  createdAt     DateTime @default(now())
 }
 
 model Partnership {
-  id              Int      @id @default(autoincrement())
-  organisation    String
-  contactPerson   String
-  email           String
-  contactNumber   String
-  state           String 
-  city            String
-  remarks         String?
-  createdAt       DateTime @default(now())
+  id            Int      @id @default(autoincrement())
+  organisation  String
+  contactPerson String
+  email         String
+  contactNumber String
+  state         String
+  city          String
+  remarks       String?
+  createdAt     DateTime @default(now())
 }
 
-model FirstHack {
-  id             String   @id @unique
-  teamName       String
-  teamSize       String
-  soloPreference String?   
-  fullName       String
-  email          String
-  phone          String
-  cityState      String
-  experience     String
-  agreement      Boolean
-  hackathonVersion String
-  createdAt      DateTime @default(now())
+model Hackathon {
+  id        Int        @id @default(autoincrement())
+  name      String     // "FirstHack", "SecondHack", "WomenHack"
+  version   String     // "2025.1", "2025.2"
+  createdAt DateTime   @default(now())
+  updatedAt DateTime   @updatedAt
+
+  participants HackathonParticipant[]
 }
+
+model HackathonParticipant {
+  id               String   @id @unique
+  teamName         String
+  teamSize         String
+  soloPreference   String?
+  fullName         String
+  email            String
+  phone            String
+  cityState        String
+  experience       String
+  agreement        Boolean
+  createdAt        DateTime @default(now())
+
+  // Relations
+  hackathon   Hackathon @relation(fields: [hackathonId], references: [id])
+  hackathonId Int
+
+  credentials Credential[]
+}
+
+
+// model FirstHack {
+//   id               String   @id @unique
+//   teamName         String
+//   teamSize         String
+//   soloPreference   String?
+//   fullName         String
+//   email            String
+//   phone            String
+//   cityState        String
+//   experience       String
+//   agreement        Boolean
+//   hackathonVersion String
+//   createdAt        DateTime @default(now())
+
+//   // Opposite relation
+//   credentials Credential[]
+// }
 
 model Internship {
   id                String   @id @unique
@@ -93,5 +130,26 @@ model Internship {
   agreement         Boolean
   internshipVersion String
   createdAt         DateTime @default(now())
+
+  // Opposite relation
+  credentials Credential[]
 }
 
+model Credential {
+  id       Int      @id @default(autoincrement())
+  type     String // "CERTIFICATE" or "BADGE"
+  category String? // "WINNER", "RUNNER_UP", "PARTICIPANT" (only for badges)
+  code     String   @unique // public unique code (e.g., ZDS-ABC123)
+  issuedAt DateTime @default(now())
+  fileUrl  String? // URL to PDF (cert) or PNG/SVG (badge)
+
+  // Relations
+  user   User? @relation(fields: [userId], references: [id])
+  userId Int?
+
+  internship   Internship? @relation(fields: [internshipId], references: [id])
+  internshipId String?
+
+  participant   HackathonParticipant? @relation(fields: [participantId], references: [id])
+  participantId String?
+}
