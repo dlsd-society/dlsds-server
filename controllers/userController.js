@@ -114,3 +114,27 @@ exports.getAllUsers = async (req, res) => {
   const users = await prisma.user.findMany();
   res.json(users);
 };
+
+// controllers/userController.js
+exports.getMyAchievements = async (req, res) => {
+  try {
+    const userId = req.user.id;
+
+    const achievements = await prisma.credential.findMany({
+      where: { userId },
+      include: {
+        participant: {
+          include: { hackathon: true },
+        },
+        internship: true,
+      },
+      orderBy: { issuedAt: 'desc' },
+    });
+
+    res.json(achievements);
+  } catch (err) {
+    console.error(err);
+    res.status(500).json({ error: "Failed to fetch achievements" });
+  }
+};
+
