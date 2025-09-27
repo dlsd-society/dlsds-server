@@ -70,7 +70,10 @@ exports.getHackathonParticipants = async (req, res) => {
   try {
     const participants = await prisma.hackathonParticipant.findMany({
       where: { hackathonId: parseInt(hackathonId) },
-      include: { hackathon: true }, // so you also see hackathon name/version
+      include: { 
+        hackathon: true,
+        credentials: true, 
+      }, // so you also see hackathon name/version
     });
     res.json(participants);
   } catch (err) {
