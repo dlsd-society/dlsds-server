@@ -4,6 +4,7 @@ const jwt = require("jsonwebtoken");
 const { signup, login, getProfile, updateProfile } = require('../controllers/userController');
 const { authenticateUser } = require('../middlewares/authMiddleware');
 const { getMyAchievements } = require('../controllers/userController');
+const upload = require('../middlewares/uploadMiddleware');
 
 const router = express.Router();
 
@@ -12,7 +13,10 @@ router.post('/login', login);
 
 // Protected route for logged-in users
 router.get('/profile', authenticateUser, getProfile);
-router.put('/profile', authenticateUser, updateProfile);
+// router.put('/profile', authenticateUser, updateProfile);
+
+// Update profile (with optional image upload)
+router.put('/profile', authenticateUser, upload.single('profilePic'), updateProfile);
 
 router.get('/achievements', authenticateUser, getMyAchievements);
 
