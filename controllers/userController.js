@@ -92,11 +92,20 @@ exports.getProfile = async (req, res) => {
 
 exports.updateProfile = async (req, res) => {
   try {
-    const { name, bio, profilePic } = req.body;
+    const { name, email, role } = req.body;
+    let profilePic;
+
+    if (req.file && req.file.path) {
+      profilePic = req.file.path; // Cloudinary URL
+    }
 
     const updatedUser = await prisma.user.update({
       where: { id: req.user.id },
-      data: { name, bio, profilePic },
+      data: {
+        name,
+        email,
+        ...(profilePic && { profilePic }), // only update if image uploaded
+      },
     });
 
     const { password: _, ...safeUser } = updatedUser;
@@ -106,6 +115,7 @@ exports.updateProfile = async (req, res) => {
       user: safeUser,
     });
   } catch (err) {
+    console.error(err);
     res.status(500).json({ error: err.message });
   }
 };
