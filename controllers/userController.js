@@ -92,7 +92,7 @@ exports.getProfile = async (req, res) => {
 
 exports.updateProfile = async (req, res) => {
   try {
-    const { name, email, role } = req.body;
+    const { name, email, role, linkedIn, website, about } = req.body;
     let profilePic;
 
     if (req.file && req.file.path) {
@@ -104,6 +104,9 @@ exports.updateProfile = async (req, res) => {
       data: {
         name,
         email,
+        linkedIn,
+        website,
+        about,
         ...(profilePic && { profilePic }), // only update if image uploaded
       },
     });
@@ -125,7 +128,6 @@ exports.getAllUsers = async (req, res) => {
   res.json(users);
 };
 
-// controllers/userController.js
 exports.getMyAchievements = async (req, res) => {
   try {
     const userId = req.user.id;
