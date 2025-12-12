@@ -138,6 +138,24 @@ model Internship {
   credentials Credential[]
 }
 
+model OtherInternship {
+  id                String   @id @unique
+  fullName          String
+  email             String
+  phone             String
+  cityState         String  
+  institution       String  
+  areaOfInternship  String   // e.g., Research Internship, Campus Ambassador, etc.
+  otherAreaText     String?
+  certificateOption String?
+  agreement         Boolean
+  internshipVersion String
+  createdAt         DateTime @default(now())
+
+  // Opposite relation
+  credentials Credential[]
+}
+
 model Credential {
   id       Int      @id @default(autoincrement())
   type     String // "CERTIFICATE" or "BADGE"
@@ -152,6 +170,9 @@ model Credential {
 
   internship   Internship? @relation(fields: [internshipId], references: [id])
   internshipId String?
+
+  otherInternship OtherInternship? @relation(fields: [otherInternshipId], references: [id])
+  otherInternshipId String?
 
   participant   HackathonParticipant? @relation(fields: [participantId], references: [id])
   participantId String?
