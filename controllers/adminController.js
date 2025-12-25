@@ -10,18 +10,34 @@ const nanoid = customAlphabet('ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789', 8);
 exports.createAdmin = async (req, res) => {
   const { name, email, password } = req.body;
 
+  if (!name || !email || !password) {
+    return res.status(400).json({ error: 'All fields are required' });
+  }
+
   try {
-    const existing = await prisma.admin.findUnique({ where: { email } });
-    if (existing) return res.status(400).json({ error: 'Admin already exists' });
+    // 🚫 Block if an admin already exists
+    const adminCount = await prisma.admin.count();
+    if (adminCount > 0) {
+      return res.status(403).json({
+        error: 'Admin signup is disabled',
+      });
+    }
 
     const hashedPassword = await bcrypt.hash(password, 10);
+
     const admin = await prisma.admin.create({
-      data: { name, email, password: hashedPassword },
+      data: {
+        name,
+        email,
+        password: hashedPassword,
+      },
     });
 
-    res.status(201).json({ message: 'Admin created successfully', admin });
+    return res.status(201).json({
+      message: 'Admin created successfully',
+    });
   } catch (err) {
-    res.status(500).json({ error: err.message });
+    return res.status(500).json({ error: err.message });
   }
 };
 
