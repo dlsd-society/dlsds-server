@@ -3,7 +3,7 @@ const router = express.Router();
 const adminController = require('../controllers/adminController');
 const { authenticateAdmin } = require('../middlewares/authMiddleware');
 
-router.post('/register', adminController.createAdmin);
+// router.post('/register', adminController.createAdmin);
 router.post('/login', adminController.loginAdmin);
 
 // Admin dashboard (Protected route)

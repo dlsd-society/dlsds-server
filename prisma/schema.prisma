@@ -190,3 +190,7 @@ model BookSession {
   agreement     Boolean
   createdAt     DateTime @default(now())
 }
+
+generator seed {
+  provider = "node prisma/seed.js"
+}
