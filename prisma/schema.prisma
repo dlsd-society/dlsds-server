@@ -177,3 +177,16 @@ model Credential {
   participant   HackathonParticipant? @relation(fields: [participantId], references: [id])
   participantId String?
 }
+
+model BookSession {
+  id            Int      @id @default(autoincrement())
+  fullName      String
+  email         String
+  phone         String
+  state         String
+  city          String
+  organization  String
+  topics        String[] // selected topics
+  agreement     Boolean
+  createdAt     DateTime @default(now())
+}

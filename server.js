@@ -12,6 +12,7 @@ const hackathonParticipantRoutes = require('./routes/hackathonParticipantRoutes'
 const hackathonRoutes = require('./routes/hackathonRoutes');
 const internshipRoutes = require("./routes/internshipRoutes");
 const otherInternshipRoutes = require("./routes/otherInternshipRoutes");
+const bookSessionRoutes = require("./routes/bookSessionRoutes");
 
 const app = express();
 app.use(cors());
@@ -35,6 +36,7 @@ app.use("/api/hackathon-participants", hackathonParticipantRoutes);
 app.use("/api/hackathons", hackathonRoutes);
 app.use("/api/internships", internshipRoutes);
 app.use("/api/other-internships", otherInternshipRoutes);
+app.use("/api/book-session", bookSessionRoutes);
 
 const PORT = process.env.PORT || 5000;
 app.listen(PORT, () => console.log(`Server running on port ${PORT}`));
