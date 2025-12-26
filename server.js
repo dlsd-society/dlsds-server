@@ -14,11 +14,11 @@ const internshipRoutes = require("./routes/internshipRoutes");
 const otherInternshipRoutes = require("./routes/otherInternshipRoutes");
 const bookSessionRoutes = require("./routes/bookSessionRoutes");
 
-app.set("trust proxy", 1);
-
 const app = express();
 app.use(cors());
 app.use(express.json());
+
+app.set("trust proxy", 1);
 
 const passport = require("passport");
 require("./config/passport"); // load strategies
