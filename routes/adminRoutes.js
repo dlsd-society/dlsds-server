@@ -11,6 +11,9 @@ router.get('/dashboard', authenticateAdmin, (req, res) => {
   res.json({ message: 'Welcome to the protected Admin Dashboard', adminId: req.adminId });
 });
 
+router.get('/internships/paginated', authenticateAdmin, adminController.getInternshipsPaginated);
+
+
 // Admin action pages (Protected route)
 router.get('/hackathons', authenticateAdmin, adminController.getHackathons);
 router.get("/hackathon/:hackathonId/participants", authenticateAdmin, adminController.getHackathonParticipants);

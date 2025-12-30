@@ -207,3 +207,35 @@ exports.verifyCredential = async (req, res) => {
     res.status(500).json({ error: "Verification failed" });
   }
 };
+
+// Paginated Internships (Admin only)
+exports.getInternshipsPaginated = async (req, res) => {
+  try {
+    const page = parseInt(req.query.page) || 1;
+    const limit = 15;
+    const skip = (page - 1) * limit;
+
+    const [total, internships] = await Promise.all([
+      prisma.internship.count(),
+      prisma.internship.findMany({
+        orderBy: { createdAt: 'desc' },
+        skip,
+        take: limit,
+      }),
+    ]);
+
+    const totalPages = Math.ceil(total / limit);
+
+    res.json({
+      data: internships,
+      pagination: {
+        total,
+        page,
+        totalPages,
+        limit,
+      },
+    });
+  } catch (err) {
+    res.status(500).json({ error: err.message });
+  }
+};
